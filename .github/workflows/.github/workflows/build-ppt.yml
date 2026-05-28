@@ -1,0 +1,38 @@
+name: Generate PowerPoint Slide Deck
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: # Allows you to trigger the build manually with a single click
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code from your repository
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # Step 2: Install Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    # Step 3: Install necessary libraries
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Step 4: Run your script to generate the .pptx file
+    - name: Run Slide Generation Script
+      run: python generate_ppt_beautiful.py
+
+    # Step 5: Upload the generated file so you can download it from GitHub
+    - name: Upload Slide Deck Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Online_House_Rental_Presentation
+        path: Online_House_Rental_Beautiful_Presentation.pptx
